@@ -22,6 +22,19 @@ class Board:
         self._points_[7].extend([Checker("black")] * 3)
         self._points_[5].extend([Checker("black")] * 5)
 
+    def move_checker(self, start_point: int, end_point: int):
+        start_idx = start_point - 1
+        end_idx = end_point - 1
+
+        checker = self._points_[start_idx].pop()
+        destination_checkers = self._points_[end_idx]
+
+        if destination_checkers and destination_checkers[0]._color_ != checker._color_:
+            hit_checker = self._points_[end_idx].pop()
+            self._bar_[hit_checker._color_].append(hit_checker)
+        
+        self._points_[end_idx].append(checker)
+
     def is_valid_move(self, start_point: int, end_point: int, player_color: str) -> bool:
         start_idx = start_point - 1
         end_idx = end_point - 1
@@ -33,7 +46,7 @@ class Board:
             return False
 
         destination_checkers = self._points_[end_idx]
-        
+
         if destination_checkers and destination_checkers[0]._color_ != player_color and len(destination_checkers) > 1:
             return False
 
