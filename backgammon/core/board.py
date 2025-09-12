@@ -82,3 +82,19 @@ class Board:
             return False  
         
         return True
+    
+    def reenter_checker(self, player_color: str, dice_roll: int):
+
+        if player_color == "white":
+            target_idx = 24 - dice_roll
+        else:  
+            target_idx = dice_roll - 1
+
+        checker = self._bar_[player_color].pop()
+        destination_checkers = self._points_[target_idx]
+
+        if destination_checkers and destination_checkers[0]._color_ != checker._color_:
+            hit_checker = self._points_[target_idx].pop()
+            self._bar_[hit_checker._color_].append(hit_checker)
+
+        self._points_[target_idx].append(checker)

@@ -1,6 +1,10 @@
 # Changelog
 Todas las versiones notables de este proyecto se documentarán en este archivo.
 
+## [1.3.0] - 2025-08-28
+### Agregado
+- nuevas funciones relacionadas al movimiento a la clase board
+
 ## [1.2.0] - 2025-08-28
 ### Agregado
 - clases player y board
