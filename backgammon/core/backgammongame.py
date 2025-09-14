@@ -10,3 +10,13 @@ class BackgammonGame:
         self._dice_ = Dice()
         self._current_player_idx_ = 0
         self._moves_ = []
+
+    def get_current_player(self) -> Player:
+        return self._players_[self._current_player_idx_]
+    
+    def roll_dice(self):
+        self._dice_.roll()
+        self._moves_ = self._dice_.get_moves()
+        print(f"{self.get_current_player()._name_} sacó: {self._dice_._values_}")
+        if len(self._moves_) == 4:
+            print("¡Dobles! Tienes cuatro movimientos.")
