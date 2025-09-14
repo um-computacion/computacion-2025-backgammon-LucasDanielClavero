@@ -20,3 +20,8 @@ class BackgammonGame:
         print(f"{self.get_current_player()._name_} sacó: {self._dice_._values_}")
         if len(self._moves_) == 4:
             print("¡Dobles! Tienes cuatro movimientos.")
+
+    def switch_turn(self):
+        self._current_player_idx_ = (self._current_player_idx_ + 1) % 2
+        print("-" * 40)
+        print(f"Es el turno de {self.get_current_player()._name_} ({self.get_current_player()._color_})")
