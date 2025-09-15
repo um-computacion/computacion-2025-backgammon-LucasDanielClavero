@@ -48,7 +48,7 @@ class BackgammonGame:
             return False
         
     def attempt_reentry(self, dice_roll: int) -> bool:
-        
+
         player = self.get_current_player()
         if self._board_.is_reentry_possible(player._color_, dice_roll):
             self._board_.reenter_checker(player._color_, dice_roll)
@@ -58,3 +58,6 @@ class BackgammonGame:
             target_point = (25 - dice_roll) if player._color_ == 'white' else dice_roll
             print(f"No se puede reingresar en el punto {target_point}. Está bloqueado.")
             return False
+        
+    def is_game_over(self) -> bool:
+        return False
