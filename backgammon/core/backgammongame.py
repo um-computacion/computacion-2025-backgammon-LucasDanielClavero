@@ -25,3 +25,24 @@ class BackgammonGame:
         self._current_player_idx_ = (self._current_player_idx_ + 1) % 2
         print("-" * 40)
         print(f"Es el turno de {self.get_current_player()._name_} ({self.get_current_player()._color_})")
+
+    def attempt_move(self, start_point: int, dice_roll: int) -> bool:
+
+        player = self.get_current_player()
+        
+        if player._color_ == "white":
+            end_point = start_point - dice_roll
+        else:  # Negro
+            end_point = start_point + dice_roll
+
+        if not (1 <= end_point <= 24):
+            print("Movimiento inválido: Aún no se pueden sacar fichas del tablero.")
+            return False
+
+        if self._board_.is_valid_move(start_point, end_point, player._color_):
+            self._board_.move_checker(start_point, end_point)
+            self._moves_.remove(dice_roll)
+            return True
+        else:
+            print("Movimiento inválido. Por favor, intenta de nuevo.")
+            return False
