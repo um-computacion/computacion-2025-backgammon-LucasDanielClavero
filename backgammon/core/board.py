@@ -36,6 +36,7 @@ class Board:
         self._points_[end_idx].append(checker)
 
     def is_valid_move(self, start_point: int, end_point: int, player_color: str) -> bool:
+
         start_idx = start_point - 1
         end_idx = end_point - 1
 
@@ -54,3 +55,46 @@ class Board:
             return False
         if player_color == "black" and start_idx > end_idx:
             return False
+        
+    def move_checker(self, start_point: int, end_point: int):
+
+        start_idx = start_point - 1
+        end_idx = end_point - 1
+
+        checker = self._points_[start_idx].pop()
+        destination_checkers = self._points_[end_idx]
+
+        if destination_checkers and destination_checkers[0]._color_ != checker._color_:
+            hit_checker = self._points_[end_idx].pop()
+            self._bar_[hit_checker._color_].append(hit_checker)
+        
+        self._points_[end_idx].append(checker)
+
+    def is_reentry_possible(self, player_color: str, dice_roll: int) -> bool:
+
+        if player_color == "white":
+            target_idx = 24 - dice_roll
+        else: 
+            target_idx = dice_roll - 1
+
+        destination_checkers = self._points_[target_idx]
+        if destination_checkers and destination_checkers[0]._color_ != player_color and len(destination_checkers) > 1:
+            return False  
+        
+        return True
+    
+    def reenter_checker(self, player_color: str, dice_roll: int):
+
+        if player_color == "white":
+            target_idx = 24 - dice_roll
+        else:  
+            target_idx = dice_roll - 1
+
+        checker = self._bar_[player_color].pop()
+        destination_checkers = self._points_[target_idx]
+
+        if destination_checkers and destination_checkers[0]._color_ != checker._color_:
+            hit_checker = self._points_[target_idx].pop()
+            self._bar_[hit_checker._color_].append(hit_checker)
+
+        self._points_[target_idx].append(checker)
