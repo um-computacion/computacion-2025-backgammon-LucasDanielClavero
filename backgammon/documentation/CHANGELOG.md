@@ -1,6 +1,10 @@
 # Changelog
 Todas las versiones notables de este proyecto se documentarán en este archivo.
 
+## [1.4.0] - 2025-08-28
+### Agregado
+- nuevas funciones en la clase backgammongame
+
 ## [1.3.0] - 2025-08-28
 ### Agregado
 - nuevas funciones relacionadas al movimiento a la clase board
