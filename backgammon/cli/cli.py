@@ -62,3 +62,16 @@ class CLI:
         dice_roll = self._get_player_input_for_dice_("¿Qué dado quieres usar para reingresar? ")
         if dice_roll:
             self._game_.attempt_reentry(dice_roll)
+
+    def _handle_normal_turn_(self):
+        """Gestiona un turno normal de juego."""
+        start_point_str = input("Ingresa el punto desde el que quieres mover (o 'p' para pasar): ")
+        if start_point_str.lower() == 'p':
+            print("Elegiste pasar tu turno.")
+            self._game_._moves_ = []
+            return
+
+        start_point = int(start_point_str)
+        dice_roll = self._get_player_input_for_dice_(f"¿Qué dado quieres usar para el punto {start_point}? ")
+        if dice_roll:
+            self._game_.attempt_move(start_point, dice_roll)
