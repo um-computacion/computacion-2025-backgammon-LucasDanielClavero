@@ -46,3 +46,19 @@ class CLI:
         print("\n" + top_line + top_board)
         print("-" * 45)
         print(bottom_board + bottom_line)
+    
+    def _handle_reentry_turn_(self, player):
+        """Gestiona el turno de un jugador que debe reingresar fichas."""
+        board = self._game_._board_
+        checkers_on_bar = len(board._bar_[player._color_])
+        print(f"Tienes {checkers_on_bar} ficha(s) en la barra. Debes reingresar.")
+
+        possible_moves = [r for r in self._game_._moves_ if board.is_reentry_possible(player._color_, r)]
+        if not possible_moves:
+            print("No hay movimientos posibles para reingresar. Pierdes el turno.")
+            self._game_._moves_ = []
+            return
+
+        dice_roll = self._get_player_input_for_dice_("¿Qué dado quieres usar para reingresar? ")
+        if dice_roll:
+            self._game_.attempt_reentry(dice_roll)
