@@ -75,7 +75,7 @@ class CLI:
         dice_roll = self._get_player_input_for_dice_(f"¿Qué dado quieres usar para el punto {start_point}? ")
         if dice_roll:
             self._game_.attempt_move(start_point, dice_roll)
-            
+
     def _get_player_input_for_dice_(self, message: str) -> int | None:
         """Pide al jugador que elija un dado y valida la entrada."""
         while True:
@@ -89,3 +89,40 @@ class CLI:
             except ValueError:
                 print("Entrada inválida. Por favor, ingresa un número.")
         return None
+    
+    def run(self):
+        """Inicia y gestiona el bucle principal del juego para la CLI."""
+        print("--- ¡Bienvenido a Backgammon! ---")
+        while not self._game_.is_game_over():
+            self._display_board_()
+            player = self._game_.get_current_player()
+            print(f"Turno: {player._name_} ({player._color_})")
+
+            self._game_.roll_dice()
+            
+            while self._game_._moves_:
+                print(f"Movimientos disponibles: {self._game_._moves_}")
+                checkers_on_bar = len(self._game_._board_._bar_[player._color_])
+                
+                try:
+                    if checkers_on_bar > 0:
+                        self._handle_reentry_turn_(player)
+                    else:
+                        self._handle_normal_turn_()
+                    
+                    if self._game_._moves_:
+                        self._display_board_()
+
+                except ValueError:
+                    print("Entrada inválida. Por favor, ingresa solo números.")
+                except Exception as e:
+                    print(f"Ocurrió un error: {e}")
+
+            self._game_.switch_turn()
+            
+if __name__ == "__main__":
+    game = BackgammonGame()
+    
+    cli = CLI(game)
+    
+    cli.run()
