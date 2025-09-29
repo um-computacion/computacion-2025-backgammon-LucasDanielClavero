@@ -75,3 +75,17 @@ class CLI:
         dice_roll = self._get_player_input_for_dice_(f"¿Qué dado quieres usar para el punto {start_point}? ")
         if dice_roll:
             self._game_.attempt_move(start_point, dice_roll)
+            
+    def _get_player_input_for_dice_(self, message: str) -> int | None:
+        """Pide al jugador que elija un dado y valida la entrada."""
+        while True:
+            try:
+                dice_roll_str = input(message)
+                dice_roll = int(dice_roll_str)
+                if dice_roll not in self._game_._moves_:
+                    print("Ese no es un dado válido o disponible.")
+                    continue
+                return dice_roll
+            except ValueError:
+                print("Entrada inválida. Por favor, ingresa un número.")
+        return None
