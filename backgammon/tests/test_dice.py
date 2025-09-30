@@ -41,3 +41,36 @@ class TestDice(unittest.TestCase):
         # Verificamos que el resultado y el estado interno son los esperados
         self.assertEqual(result, [3, 5])
         self.assertEqual(self.dice._values_, [3, 5])
+
+    @patch('random.randint')
+    def test_get_moves_regular_roll(self, mock_randint):
+        """
+        Verifica que get_moves() devuelve los dos valores de los dados
+        cuando estos son diferentes (una tirada normal).
+        """
+        # Simulamos una tirada de 4 y 6
+        mock_randint.side_effect = [4, 6]
+        self.dice.roll()
+
+        # Obtenemos y verificamos los movimientos
+        moves = self.dice.get_moves()
+        self.assertEqual(moves, [4, 6])
+        self.assertEqual(len(moves), 2)
+
+    @patch('random.randint')
+    def test_get_moves_double_roll(self, mock_randint):
+        """
+        Verifica que get_moves() devuelve cuatro veces el valor del dado
+        cuando la tirada es un doble, como dictan las reglas del Backgammon.
+        """
+        # Simulamos una tirada doble de 5
+        mock_randint.side_effect = [5, 5]
+        self.dice.roll()
+
+        # Obtenemos y verificamos los movimientos para un doble
+        moves = self.dice.get_moves()
+        self.assertEqual(moves, [5, 5, 5, 5])
+        self.assertEqual(len(moves), 4)
+
+if __name__ == '__main__':
+    unittest.main()
