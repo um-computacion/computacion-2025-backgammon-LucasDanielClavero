@@ -1,11 +1,3 @@
-<PRIMERA CONSULTA GENERAL>
-
-Herramienta utilizada: Gemini PRO
-
-Promp: (ADJUNTO PDF DEL PRACTICO) (ADJUNTO CAPTURA DE PANTALLA DE MI CARPETA DEL PROYECYO) estoy haciendo este practico (el del pdf) y ya funciona el codigo y tengo los tests cargados, ahora quiero hacer el coverage, puedes hacer un codigo que se adapte a mi estructura y me haga el coverage de mis codigos?
-
-Resultado extraido: 
-
 import subprocess
 import os
 import sys
@@ -84,6 +76,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-if __name__ == '__main__':
-    unittest.main()
