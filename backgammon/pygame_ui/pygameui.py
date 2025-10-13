@@ -1,7 +1,7 @@
 # pygame_ui/pygame_ui.py
 
 import pygame
-from ..core.backgammongame import BackgammonGame
+from core.backgammongame import BackgammonGame
 
 # --- Constantes de Configuración ---
 SCREEN_WIDTH = 800
