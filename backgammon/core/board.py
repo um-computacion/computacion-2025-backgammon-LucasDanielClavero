@@ -55,6 +55,7 @@ class Board:
             return False
         if player_color == "black" and start_idx > end_idx:
             return False
+        return True
         
     def move_checker(self, start_point: int, end_point: int):
 
