@@ -1,7 +1,27 @@
 # Changelog
 Todas las versiones notables de este proyecto se documentarán en este archivo.
 
-## [1.5.0] - 2025-09-28
+## [1.10.0] - 2025-10-13
+### Agregado
+- Interfaz grafica
+
+## [1.9.0] - 2025-10-11
+### Agregado
+- Agrego codigo para generar un reporte de covertura de los tests
+
+## [1.8.0] - 2025-10-11
+### Agregado
+- Test de clase board / test backgammongame / test Cli
+
+## [1.7.0] - 2025-10-01
+### Agregado
+- Test de clase dice y player
+
+## [1.6.0] - 2025-09-28
+### Agregado
+- Test de clase checker
+
+## [1.6.0] - 2025-09-28
 ### Agregado
 - Test de clase checker
 
