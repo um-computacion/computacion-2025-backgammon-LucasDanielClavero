@@ -1,6 +1,10 @@
 # Changelog
 Todas las versiones notables de este proyecto se documentarán en este archivo.
 
+## [1.10.1] - 2025-10-30
+### Arreglo
+- Condicion de victoria del CLI - logica de board y backgammongame
+
 ## [1.10.0] - 2025-10-13
 ### Agregado
 - Interfaz grafica
