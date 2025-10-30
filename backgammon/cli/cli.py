@@ -3,14 +3,10 @@ sys.path.append('..')
 
 from core.backgammongame import BackgammonGame
 class CLI:
-    """
-    Interfaz de línea de comandos para el juego de Backgammon.
-    """
     def __init__(self, game: BackgammonGame):
         self._game_ = game
 
     def _display_board_(self):
-        """Muestra una representación textual del tablero, incluyendo la barra."""
         board = self._game_._board_
         points = board._points_
 
@@ -22,9 +18,9 @@ class CLI:
                 row += f" {points[p][i]._color_[0].upper()} " if i < len(points[p]) else " . "
             
             if i == 2:
-                row += f"| N:{len(board._bar_['black'])} |"
+                row += f"| B:{len(board._bar_['black'])} |" 
             elif i == 3:
-                row += f"| B:{len(board._bar_['white'])} |"
+                row += f"| W:{len(board._bar_['white'])} |" 
             else:
                 row += "|     |"
 
@@ -34,6 +30,7 @@ class CLI:
 
         bottom_line = "12 11 10  9  8  7 |     |  6  5  4  3  2  1\n"
         bottom_board = ""
+
         for i in range(4, -1, -1):
             row = ""
             for p in range(11, 5, -1):
@@ -47,6 +44,7 @@ class CLI:
         print("-" * 45)
         print(bottom_board + bottom_line)
     
+
     def _handle_reentry_turn_(self, player):
         """Gestiona el turno de un jugador que debe reingresar fichas."""
         board = self._game_._board_
@@ -117,6 +115,9 @@ class CLI:
                     print("Entrada inválida. Por favor, ingresa solo números.")
                 except Exception as e:
                     print(f"Ocurrió un error: {e}")
+
+            if self._game_.is_game_over(): 
+                break
 
             self._game_.switch_turn()
             
