@@ -26,24 +26,19 @@ class BackgammonGame:
         print(f"Es el turno de {self.get_current_player()._name_} ({self.get_current_player()._color_})")
 
     def attempt_move(self, start_point: int, dice_roll: int) -> bool:
-        """
-        Intenta mover una ficha o sacarla del tablero.
-        Este método ahora está completamente reescrito.
-        """
         player = self.get_current_player()
         start_idx = start_point - 1
-
         if not (0 <= start_idx < 24) or \
            not self._board_._points_[start_idx] or \
            self._board_._points_[start_idx][0]._color_ != player._color_:
             print(f"Movimiento inválido: No tienes fichas en el punto {start_point}.")
             return False
-
+        
         if player._color_ == "white":
             end_point = start_point - dice_roll
         else: 
             end_point = start_point + dice_roll
-
+            
         if not (1 <= end_point <= 24):
             if not self._board_.all_checkers_in_home_board(player._color_):
                 print("Movimiento inválido: Todas tus fichas deben estar en el cuadrante final para sacarlas.")
@@ -51,14 +46,12 @@ class BackgammonGame:
 
             if (player._color_ == "white" and end_point == 0) or \
                (player._color_ == "black" and end_point == 25):
-                
                 self._board_.bear_off_checker(start_point)
                 self._moves_.remove(dice_roll)
                 return True
 
             if (player._color_ == "white" and end_point < 0) or \
                (player._color_ == "black" and end_point > 25):
-
                 is_highest_checker = True
                 if player._color_ == "white":
                     for p_idx in range(5, start_idx, -1):
@@ -102,7 +95,6 @@ class BackgammonGame:
             return False
         
     def is_game_over(self) -> bool:
-        """Verifica si el juego terminó (un jugador sacó 15 fichas)."""
         if self._board_.get_borne_off_count("white") == 15:
             print("\n" + "=" * 40)
             print("¡JUEGO TERMINADO! ¡El jugador 1 (White) GANA!")

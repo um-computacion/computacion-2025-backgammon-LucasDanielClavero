@@ -44,9 +44,7 @@ class CLI:
         print("-" * 45)
         print(bottom_board + bottom_line)
     
-
     def _handle_reentry_turn_(self, player):
-        """Gestiona el turno de un jugador que debe reingresar fichas."""
         board = self._game_._board_
         checkers_on_bar = len(board._bar_[player._color_])
         print(f"Tienes {checkers_on_bar} ficha(s) en la barra. Debes reingresar.")
@@ -62,7 +60,6 @@ class CLI:
             self._game_.attempt_reentry(dice_roll)
 
     def _handle_normal_turn_(self):
-        """Gestiona un turno normal de juego."""
         start_point_str = input("Ingresa el punto desde el que quieres mover (o 'p' para pasar): ")
         if start_point_str.lower() == 'p':
             print("Elegiste pasar tu turno.")
@@ -75,7 +72,6 @@ class CLI:
             self._game_.attempt_move(start_point, dice_roll)
 
     def _get_player_input_for_dice_(self, message: str) -> int | None:
-        """Pide al jugador que elija un dado y valida la entrada."""
         while True:
             try:
                 dice_roll_str = input(message)
@@ -89,7 +85,6 @@ class CLI:
         return None
     
     def run(self):
-        """Inicia y gestiona el bucle principal del juego para la CLI."""
         print("--- ¡Bienvenido a Backgammon! ---")
         while not self._game_.is_game_over():
             self._display_board_()

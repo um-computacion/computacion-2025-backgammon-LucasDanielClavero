@@ -1,6 +1,10 @@
 # Changelog
 Todas las versiones notables de este proyecto se documentarán en este archivo.
 
+## [1.10.3] - 2025-11-1
+### Arreglo
+- Testeo y covertura
+
 ## [1.10.2] - 2025-10-31
 ### Arreglo
 - Condicion de victoria de la Interfaz grafica
