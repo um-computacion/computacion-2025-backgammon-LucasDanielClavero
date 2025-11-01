@@ -1,6 +1,10 @@
 # Changelog
 Todas las versiones notables de este proyecto se documentarán en este archivo.
 
+## [1.10.2] - 2025-10-31
+### Arreglo
+- Condicion de victoria de la Interfaz grafica
+
 ## [1.10.1] - 2025-10-30
 ### Arreglo
 - Condicion de victoria del CLI - logica de board y backgammongame
@@ -20,10 +24,6 @@ Todas las versiones notables de este proyecto se documentarán en este archivo.
 ## [1.7.0] - 2025-10-01
 ### Agregado
 - Test de clase dice y player
-
-## [1.6.0] - 2025-09-28
-### Agregado
-- Test de clase checker
 
 ## [1.6.0] - 2025-09-28
 ### Agregado

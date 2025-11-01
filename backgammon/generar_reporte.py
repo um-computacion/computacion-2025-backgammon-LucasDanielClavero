@@ -1,78 +1,91 @@
+# generar_reporte.py
 import subprocess
 import os
 import sys
 
-# --- Configuración ---
-SOURCE_DIRS = "core,cli"
-TEST_DIR = "tests"
-OUTPUT_FILENAME = "coverage_report.txt"
+# Define la ruta base del proyecto
+project_root = os.path.dirname(os.path.abspath(__file__))
 
-def main():
-    """
-    Función principal para ejecutar coverage y generar el reporte,
-    incluso si las pruebas fallan.
-    """
-    print("--- Iniciando la generación del reporte de cobertura ---")
-    
-    python_executable = sys.executable
+# Carpetas de código fuente a cubrir
+source_dirs = "core,cli,pygame_ui"
 
-    # 1. Ejecutar las pruebas con coverage para recolectar datos.
-    # Se ignora si las pruebas fallan para poder generar un reporte parcial.
-    run_command = [
-        python_executable, "-m", "coverage", "run",
-        f"--source={SOURCE_DIRS}",
-        "-m", "unittest", "discover",
-        "-s", TEST_DIR
+# Carpeta de tests
+tests_dir = os.path.join(project_root, "tests")
+
+# Archivo de salida del reporte
+report_file = os.path.join(project_root, "coverage_report.txt")
+
+print("--- Iniciando la generación del reporte de cobertura ---")
+
+# --- 1. Ejecutar Pruebas con Coverage ---
+command = [
+    sys.executable, "-m", "coverage", "run",
+    "--source=" + source_dirs,
+    "-m", "unittest", "discover", "-s", tests_dir
+]
+
+print(f"Ejecutando comando: {' '.join(command)}")
+
+result = subprocess.run(
+    command, 
+    capture_output=True, 
+    text=True, 
+    encoding='latin-1'
+)
+
+# --- CORRECCIÓN ---
+# Hemos comentado el bloque que imprimía el 'stdout' (los prints de los tests)
+# para que la salida sea más limpia.
+# 
+# if result.stdout:
+#     print("\nSalida de Pruebas (stdout):")
+#     print(result.stdout)
+
+# Dejamos el 'stderr' porque aquí es donde unittest imprime el "OK" o "FAILED"
+if result.stderr:
+    print("\nSalida de Pruebas (stderr):")
+    print(result.stderr)
+
+# Si los tests fallaron (returncode != 0), mostramos una advertencia.
+if result.returncode != 0:
+    print(f"\n⚠️  ADVERTENCIA: Los tests fallaron (código de salida: {result.returncode}).")
+    print("Se generará un reporte de cobertura parcial.")
+else:
+    print("\nPruebas ejecutadas y datos de cobertura recolectados. ✅")
+
+
+# --- 2. Generar el Reporte (esto se ejecuta siempre) ---
+print("\nGenerando reporte...")
+
+try:
+    report_command = [
+        sys.executable, "-m", "coverage", "report",
+        "--format=text",
+        "--omit=*/__init__.py"  # Omitir archivos __init__.py
     ]
     
-    print(f"Ejecutando comando: {' '.join(run_command)}")
-    # Ejecutamos el comando sin 'check=True' para que no se detenga si hay errores.
-    result = subprocess.run(
-        run_command,
-        capture_output=True,
-        text=True,
+    report_result = subprocess.run(
+        report_command, 
+        capture_output=True, 
+        text=True, 
+        check=True,
         encoding='latin-1'
     )
 
-    if result.returncode != 0:
-        print("\n⚠️ ADVERTENCIA: Una o más pruebas fallaron. El reporte de cobertura generado será parcial e impreciso.")
-        print("   Se recomienda corregir los errores en las pruebas para obtener un resultado válido.")
-        print("\n--- Errores de Pruebas ---")
-        print(result.stderr)
-        print("--------------------------\n")
-    else:
-        print("Pruebas ejecutadas y datos de cobertura recolectados. ✅")
+    report_content = report_result.stdout
 
-    # 2. Generar el reporte de texto sin importar el resultado de las pruebas.
-    report_command = [python_executable, "-m", "coverage", "report", "-m"]
-    
-    try:
-        print("Generando reporte...")
-        report_content = subprocess.run(
-            report_command,
-            capture_output=True,
-            text=True,
-            check=True, # Aquí sí se necesita que el comando funcione
-            encoding='latin-1'
-        ).stdout
-        
-        # 3. Guardar el reporte en un archivo de texto.
-        with open(OUTPUT_FILENAME, "w", encoding='latin-1') as f:
-            f.write(report_content)
-            
-        print(f"Reporte guardado exitosamente en: '{os.path.abspath(OUTPUT_FILENAME)}' 📋")
-        print("\n--- Proceso finalizado ---")
-        print("\nContenido del Reporte:")
-        print("--------------------------------------------------")
-        print(report_content)
-        print("--------------------------------------------------")
+    # Guardar el reporte en un archivo
+    with open(report_file, "w", encoding='latin-1') as f:
+        f.write(report_content)
+    print(f"Reporte guardado exitosamente en: '{report_file}' ✅")
 
-    except subprocess.CalledProcessError as e:
-        print("Error crítico al intentar generar el reporte de coverage.")
-        print("Esto puede suceder si no se recolectó ningún dato de cobertura,")
-        print("posiblemente debido a un error de configuración o a que no se encontró ninguna prueba.")
-        print(e.stderr)
-        sys.exit(1)
+    print("\n--- Proceso finalizado ---")
+    print("\nContenido del Reporte:")
+    print(report_content)
 
-if __name__ == "__main__":
-    main()
+except subprocess.CalledProcessError as e:
+    print(f"\n❌ ERROR: Falló la generación del reporte de coverage.")
+    print("Esto puede pasar si 'coverage' no encontró datos (.coverage).")
+    print(f"Error: {e.stderr}")
+except Exception as e:
+    print(f"Ocurrió un error inesperado: {e}")

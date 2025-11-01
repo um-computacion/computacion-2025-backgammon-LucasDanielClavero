@@ -150,6 +150,68 @@ class TestBoard(unittest.TestCase):
         # Verificar que la ficha negra capturada está en la barra
         self.assertEqual(len(self.board._bar_["black"]), 1)
         self.assertEqual(self.board._bar_["black"][0]._color_, "black")
+    def test_all_checkers_in_home_board(self):
+        """
+        Prueba la lógica de 'all_checkers_in_home_board' (líneas 88-99).
+        """
+        # 1. Caso Falso: Ficha en la barra
+        self.board._bar_["white"].append(Checker("white"))
+        self.assertFalse(self.board.all_checkers_in_home_board("white"))
+        self.board._bar_["white"] = [] # Limpiar
+
+        # 2. Caso Falso: Ficha blanca fuera del home (puntos 1-6 / índices 0-5)
+        # (El setup inicial ya tiene fichas afuera, por ej. en punto 12 / índice 11)
+        self.assertFalse(self.board.all_checkers_in_home_board("white"))
+
+        # 3. Caso Falso: Ficha negra fuera del home (puntos 19-24 / índices 18-23)
+        self.assertFalse(self.board.all_checkers_in_home_board("black"))
+
+        # 4. Caso Verdadero: Mover todas las fichas al home
+        # Limpiamos el tablero y ponemos fichas solo en el home
+        self.board._points_ = [[] for _ in range(24)]
+        self.board._points_[0].append(Checker("white")) # Punto 1
+        self.board._points_[5].append(Checker("white")) # Punto 6
+        self.assertTrue(self.board.all_checkers_in_home_board("white"))
+
+        # 5. Caso Verdadero: Negro
+        self.board._points_ = [[] for _ in range(24)]
+        self.board._points_[18].append(Checker("black")) # Punto 19
+        self.board._points_[23].append(Checker("black")) # Punto 24
+        self.assertTrue(self.board.all_checkers_in_home_board("black"))
+
+        # 6. Caso Falso: Ficha negra en el home blanco
+        self.board._points_[0].append(Checker("black")) # Punto 1
+        self.assertFalse(self.board.all_checkers_in_home_board("black"))
+
+
+    def test_bear_off_checker(self):
+        """
+        Prueba la lógica de 'bear_off_checker' (líneas 103-106).
+        """
+        # El punto 1 (índice 0) tiene 2 fichas blancas
+        self.assertEqual(len(self.board._points_[0]), 2)
+        self.assertEqual(len(self.board._borne_off_["white"]), 0)
+
+        # Sacamos una ficha del punto 1
+        self.board.bear_off_checker(1)
+        
+        # Verificamos que se movió a 'borne_off'
+        self.assertEqual(len(self.board._points_[0]), 1)
+        self.assertEqual(len(self.board._borne_off_["white"]), 1)
+        self.assertEqual(self.board._borne_off_["white"][0]._color_, "white")
+
+    def test_get_borne_off_count(self):
+        """
+        Prueba la lógica de 'get_borne_off_count' (líneas 108-110).
+        """
+        self.assertEqual(self.board.get_borne_off_count("white"), 0)
+        self.assertEqual(self.board.get_borne_off_count("black"), 0)
+
+        # Añadimos una ficha manualmente para probar el conteo
+        self.board._borne_off_["white"].append(Checker("white"))
+        
+        self.assertEqual(self.board.get_borne_off_count("white"), 1)
+        self.assertEqual(self.board.get_borne_off_count("black"), 0)
 
 
 if __name__ == '__main__':
